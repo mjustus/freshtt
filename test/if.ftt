@@ -1,0 +1,4 @@
+SUCCESS
+
+_ : (A : N) -> (X , Y : U 0) (x : X) (y : Y) [a , b : A] -> Y
+  = \_ X Y x y. !a b. elim Bool 0 (elim Bool 1 (\_. U 0) X Y) x y (= a b)

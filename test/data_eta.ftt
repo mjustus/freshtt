@@ -1,0 +1,24 @@
+SUCCESS
+
+data One : U 0
+  | Star : One
+;
+
+data Eq0 : (A : U 0) (a : A) (a' : A) -> U 1
+  | refl0 : (A : U 0) -> (a : A) -> Eq0 A a a
+;
+
+data Eq1 : (A : U 1) (a : A) (a' : A) -> U 2
+  | refl1 : (A : U 1) -> (a : A) -> Eq1 A a a
+;
+
+data T : (_ : One) -> U 0
+  | D : (o : One) -> T o
+;
+
+_ : Eq0 ((o : One) -> T o) D (\o. D o)
+  = refl0 ((o :One) -> T o) D
+;
+
+_ : Eq1 (One -> U 0) (\o. T o) T
+  = refl1 (One -> U 0) (\o. T o)

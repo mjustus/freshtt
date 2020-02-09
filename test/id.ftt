@@ -1,0 +1,4 @@
+SUCCESS
+
+id : (X : U 0) -> X -> X
+   = \_ x. x

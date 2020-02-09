@@ -1,0 +1,7 @@
+SUCCESS
+
+data Void : U 0
+;
+
+ex-falso5 : (X : U 5) -> Void -> X
+          = \X. elim Void 5 (\_. X)

@@ -1,0 +1,106 @@
+SUCCESS
+
+data FRESH : (A : N) (T : U 1) -> U 2
+  | FR : (A : N) (T : U 1) (t : T) [a : A] -> FRESH A T
+;
+
+PROJ1 : (A : N) (T : U 1) -> FRESH A T -> A
+ = elim FRESH 1 (\A _ _. A) (\_ _ _. !a. a)
+;
+
+PROJ2 : (A : N) (T : U 1) -> FRESH A T -> T
+ = elim FRESH 1 (\_ T _. T) (\_ _ t. !_. t)
+;
+
+{-
+ap : (A : N) (T : U 1) (X : [a : A] -> FRESH A T a) -> !a : A. FRESH A ([A] T) a
+   = \A T f. ?b : A. FR A ([A] T) (!a. PROJ2 (f @ a)) @ b
+;
+-}
+
+data Fresh : (A : N) (T : U 1) (a : A) -> U 2
+  | Fr : (A : N) (T : U 1) (t : T) [a : A] -> Fresh A T a
+;
+
+{-
+x : [a : A] -> T
+f : (a : A) -> Fresh A T a
+
+?a : A. ap (f (x @ a))
+-}
+
+elim-Fresh :
+  (P : (A : N) (T : U 1) (a : A) -> Fresh A T a -> U 1) ->
+  ((A : N) (T : U 1) (t : T) [a : A] -> P A T a (Fr A T t @ a)) ->
+  (A : N) (T : U 1) (a : A) (F : Fresh A T a) -> P A T a F
+= elim Fresh 1
+;
+
+Proj1 : (A : N) (T : U 1) (a : A) -> Fresh A T a -> A
+ = elim Fresh 1 (\A _ _ _. A) (\_ _ _. !a. a)
+;
+
+Proj2 : (A : N) (T : U 1) (a : A) -> Fresh A T a -> T
+ = elim Fresh 1 (\_ T _ _. T) (\_ _ t. !_. t)
+;
+
+data FreshAbs : (A : N) (T : U 1) (a : A) -> U 2
+  | FrAbs : (A : N) (T : U 1) (t : [A] T) [a : A] -> FreshAbs A T a
+;
+
+elim-FreshAbs :
+  (P : (A : N) (T : U 1) (a : A) -> FreshAbs A T a -> U 1) ->
+  ((A : N) (T : U 1) (t : [A] T) [a : A] -> P A T a (FrAbs A T t @ a)) ->
+  (A : N) (T : U 1) (a : A) (F : FreshAbs A T a) -> P A T a F
+= elim FreshAbs 1
+;
+
+ap-Abs : (A : N) (T : U 1) (a : A) -> FreshAbs A T a -> T
+   = elim FreshAbs 1 (\_ T _ _. T) (\_ _ t. !a. t @ a)
+;
+
+data fresh : (A : N) (T : U 1) (t : T) (a : A) -> U 2
+  | fr : (A : N) (T : U 1) (t : T) [a : A] -> fresh A T t a
+;
+
+elim-fresh :
+  (P : (A : N) (T : U 1) (t : T) (a : A) -> fresh A T t a -> U 1) ->
+  ((A : N) (T : U 1) (t : T) [a : A] -> P A T t a (fr A T t @ a)) ->
+  (A : N) (T : U 1) (t : T) (a : A) (F : fresh A T t a) -> P A T t a F
+= elim fresh 1
+;
+
+proj1 : (A : N) (T : U 1) (t : T) (a : A) -> fresh A T t a -> A
+ = elim fresh 1 (\A _ _ _ _. A) (\_ _ _. !a. a)
+;
+
+proj2 : (A : N) (T : U 1) (t : T) (a : A) -> fresh A T t a -> T
+ = elim fresh 1 (\_ T _ _ _. T) (\_ _ t. !_. t)
+;
+
+data freshAbs : (A : N) (T : U 1) (t : [A]T) (a : A) -> U 2
+  | frAbs : (A : N) (T : U 1) (t : [A]T) [a : A] -> freshAbs A T t a
+;
+
+ap : (A : N) (T : U 1) (t : [A]T) (a : A) -> freshAbs A T t a -> T
+   = elim freshAbs 1 (\_ T _ _ _. T) (\_ _ t. !a. t @ a)
+;
+
+{-
+elim-fresh-param : (A : N) (T : U 1) ->
+  (P : (t : T) (a : A) -> fresh A T t a -> U 2) ->
+  ((t : T) [a : A] -> P t a (fr A T t @ a)) ->
+  (t : T) (a : A) (F : fresh A T t a) -> P t a F
+=
+\A T P f t a F.
+  elim fresh 3
+    (\A T t a F.
+      (P : (t : T) (a : A) -> fresh A T t a -> U 2) ->
+      ((t : T) [a : A] -> P t a (fr A T t @ a)) ->
+      P t a F
+    )
+    (\_ _ t. !a. \_ f. f t @ a)
+    A T t a F P f
+-}
+
+

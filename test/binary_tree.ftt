@@ -1,0 +1,13 @@
+SUCCESS
+
+data Tree : U 0
+  | Leaf : Tree
+  | Node : (_ : Tree) (_ : Tree) -> Tree
+;
+
+elim-tree : (P : Tree -> U 0) -> P Leaf -> ((t : Tree) -> P t -> (t' : Tree) -> P t' -> P (Node t t')) -> (t : Tree) -> P t
+          = elim Tree 0
+;
+
+t : Tree
+  = Node (Node Leaf (Node Leaf Leaf)) Leaf

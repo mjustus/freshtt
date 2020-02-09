@@ -1,0 +1,87 @@
+FAILURE NOT_FRESH_TERM
+
+data T : (_ : N) -> U 1
+  | V : (X : N) -> (_ : X) -> T X
+  | A : (X : N) (_ : T X) -> (_ : T X) -> T X
+  | L : (X : N) -> (_ : [X] T X) -> T X
+;
+
+data List : (X : N) -> U 1
+  | nil  : (X : N) -> List X
+  | cons : (X : N) -> (_ : X) -> (_ : List X) -> List X
+;
+
+elim-List : (X : N) (P : List X -> U 1) ->
+  P (nil X) ->
+  ((x : X) -> (xs : List X) -> P xs -> P (cons X x xs)) ->
+  (xs : List X) -> P xs
+=
+  \X P fn fc xs.
+    elim List 2
+     (\X xs.
+       (P : List X -> U 1) ->
+       P (nil X) ->
+       ((x : X) -> (xs : List X) -> P xs -> P (cons X x xs)) ->
+       P xs
+     )
+     (\_           _ fn _ . fn)
+     (\_ x xs IHxs P fn fc. fc x xs (IHxs P fn fc))
+     X xs P fn fc
+;
+
+_ : (X : N) -> T X
+  = \X. L X (!x. V X x)
+;
+
+
+elim-T : (X : N) (P : T X -> U 1) ->
+  ((x : X) -> P (V X x)) ->
+  ((t : T X) -> P t -> (t' : T X) -> P t' -> P (A X t t')) ->
+  ((f : [X] T X) -> ([x : X] -> P (f @ x)) -> P (L X f)) ->
+  (t : T X) -> P t
+=
+  \X P fv fa fl t.
+    elim T 2 (\X t.
+      (P : T X -> U 1) ->
+        ((x : X) -> P (V X x)) ->
+        ((t : T X) -> P t -> (t' : T X) -> P t' -> P (A X t t')) ->
+        ((f : [X] T X) -> ([x : X] -> P (f @ x)) -> P (L X f)) ->
+        P t
+      )
+      (\_ x _ fv _ _. fv x)
+      (\_ t1 IHt1 t2 IHt2 P fv fa fl. fa t1 (IHt1 P fv fa fl) t2 (IHt2 P fv fa fl))
+      (\_ f IHf P fv fa fl. fl f (!x. IHf @ x P fv fa fl))
+      X t P fv fa fl
+;
+
+subst : (X : N) -> [x : X] -> T X -> T X -> T X
+      = \X. !a. \s.
+          elim-T X (\_. T X)
+            (\x. elim Bool 1 (\_. T X) s (V X x) (= a x))
+            (\_ t _ t'. A X t t')
+            (\_ f. L X (!a. f @ a))
+;
+
+rem : (X : N) [a : X] -> List X -> List X
+    =
+\X. !a.
+  elim-List X (\_. List X)
+    (nil X)
+    (\x _ xs. elim Bool 1 (\_. List X) xs (cons X x xs) (= a x))
+;
+
+append : (X : N) -> List X -> List X -> List X =
+\X.
+  elim-List X (\_. List X -> List X)
+    (\ys. ys)
+    (\x _ f ys. cons X x (f ys))
+;
+
+fv : (X : N) -> T X -> List X
+   =
+\X.
+  elim-T X (\_. List X)
+    (\x. cons X x (nil X))
+    (\_ xs _ ys. append X xs ys)
+    (\_ f. ?a : X. rem X @ a (f @ a))
+

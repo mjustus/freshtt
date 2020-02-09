@@ -1,0 +1,6 @@
+FAILURE NOT_FRESH_TERM
+
+_ : (A : N) [a : A] -> A
+  = \A. !a.
+    let f : [A] A = !b. a in
+    f @ a

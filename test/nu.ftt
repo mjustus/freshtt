@@ -1,0 +1,4 @@
+SUCCESS
+
+_ : N -> (X : U 0) -> X -> X -> X
+  = \A _. ?n : A. \x y. x

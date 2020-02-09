@@ -1,0 +1,16 @@
+SUCCESS
+
+data One : U 0
+  | Star : One
+;
+
+data Two : U 0
+  | Top : Two
+  | Bot : Two
+;
+
+data T : (_ : Two) (_ : One) -> U 0
+  | D : T Top Star
+;
+_ : T Top Star
+  = D

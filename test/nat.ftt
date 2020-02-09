@@ -1,0 +1,32 @@
+SUCCESS
+
+data Nat : U 0
+  | Z : Nat
+  | S : (n : Nat) -> Nat
+;
+
+_ : Nat -> Nat = \m. elim Nat 0 (\_. Nat) Z (\_ n. S n) m
+;
+
+data Product : U 0
+  | Pair : (x, y : Nat) -> Product
+;
+
+fst : Product -> Nat
+    = elim Product 0 (\_. Nat) (\n _. n)
+;
+
+snd : Product -> Nat
+    = elim Product 0 (\_. Nat) (\_ n. n)
+;
+
+plus : Nat -> Nat -> Nat
+     = elim Nat 0 (\_. Nat -> Nat) (\n. n) (\_ f m. S (f m))
+;
+
+fib : Nat -> Nat
+    = \n. fst (elim Nat 0 (\_. Product) (Pair Z (S Z)) (\_ p. Pair (snd p) (plus (fst p) (snd p))) n)
+;
+
+_ : Nat
+  = fib (S (S (S (S (S (S (S (S Z))))))))

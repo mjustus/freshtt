@@ -1,0 +1,7 @@
+SUCCESS
+
+_ : (X : U 0) (x : X) -> X
+  = \X x.
+      let Y : U 0 = X in
+      let y : Y   = x in
+      y

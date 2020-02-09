@@ -1,0 +1,4 @@
+SUCCESS
+
+compose : (X : U 0) (Y : X -> U 0) (Z : (x : X) -> Y x -> U 0) -> (f: (x : X) (y : Y x) -> Z x y) -> (g : (x : X) -> Y x) -> (x : X) -> Z x (g x)
+  = \_ _ _ f g x. f x (g x)

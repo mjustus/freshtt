@@ -1,0 +1,20 @@
+SUCCESS
+
+data Void : U 0
+;
+
+data Unit : U 0
+  | One : Unit
+;
+
+data Two : U 0
+  | Top : Two
+  | Bot : Two
+;
+
+case : Two -> U 0
+     = elim Two 1 (\_. U 0) Void Unit
+;
+
+right : case Bot
+      = One

@@ -1,0 +1,13 @@
+SUCCESS
+
+data Eq : (A : U 0) (a : A) (a' : A) -> U 1
+  | refl : (A : U 0) -> (a : A) -> Eq A a a
+;
+
+data Nat : U 0
+  | Z : Nat
+  | S : (_ : Nat) -> Nat
+;
+
+_ : Eq Nat Z Z
+  = refl Nat Z

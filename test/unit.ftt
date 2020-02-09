@@ -1,0 +1,17 @@
+SUCCESS
+
+data Unit : U 0
+  | One : Unit
+;
+
+data Unit' : U 0
+  | One' : Unit'
+;
+
+data T : (_ : Unit) (_ : Unit') -> U 0
+  | D : T One One'
+;
+
+elim-one0 : (P : Unit -> U 0) -> P One -> (u : Unit) -> P u
+          = elim Unit 0
+;

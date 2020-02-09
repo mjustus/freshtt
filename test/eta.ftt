@@ -1,0 +1,8 @@
+SUCCESS
+
+T : U 0 -> U 0 -> N -> U 1
+  = \X Y A. (X -> [A] Y) -> Y -> [A] (X -> Y) -> X
+;
+
+_ : (X, Y : U 0) (A : N) -> T X Y A -> T X Y A
+  = \_ _ _ f. f

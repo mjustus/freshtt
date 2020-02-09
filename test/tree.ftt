@@ -1,0 +1,18 @@
+SUCCESS
+
+data Nat : U 0
+  | Z : Nat
+  | S : (n : Nat) -> Nat
+;
+
+data Tree : U 0
+  | Leaf : Tree
+  | Node : (f : Nat -> Tree) -> Tree
+;
+
+elim-tree : (P : Tree -> U 0) -> P Leaf -> ((f : Nat -> Tree) -> ((n : Nat) -> P (f n)) -> P (Node f)) -> (t : Tree) -> P t
+          = elim Tree 0
+;
+
+t : Tree
+  = Node (elim Nat 0 (\_. Tree) Leaf (\_ _. Leaf))

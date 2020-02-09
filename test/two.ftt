@@ -1,0 +1,29 @@
+SUCCESS
+
+data Two : U 0
+  | Top : Two
+  | Bot : Two
+;
+
+elim-two0 : (P : Two -> U 0) -> P Top -> P Bot -> (t : Two) -> P t
+          = elim Two 0
+;
+
+data T : (_ : Two) -> U 0
+  | D1 : T Top
+  | D2 : (t : Two) -> T t
+;
+
+elim-T0 : (P : (t : Two) -> T t -> U 0) -> P Top D1 -> ((t : Two) -> P t (D2 t)) -> ((t : Two) (tt : T t) -> P t tt)
+          = elim T 0
+;
+
+_ : T Top = D1
+;
+
+_ : (t : Two) -> T t = D2
+;
+
+_ : T Bot = D2 Bot
+;
+

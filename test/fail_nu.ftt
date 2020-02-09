@@ -1,0 +1,4 @@
+FAILURE NOT_FRESH_TERM
+
+_ : (A : N) -> A
+  = \A. ?a : A. a

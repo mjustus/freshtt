@@ -1,0 +1,13 @@
+SUCCESS
+
+_ : (A : N) (X : U 0) (Y : X -> U 0) -> ((x : [A]X) -> [a : A] -> Y (x @ a)) -> (x : [A]X) -> [a : A] -> Y (x @ a)
+  = \A X Y.
+      let F : U 1 = (x : [A]X) -> [a : A] -> Y (x @ a) in
+      let G : U 1 = [_ : A] -> (x : X) -> Y x          in
+      let f : G -> F =
+        \x. \y. !a. (x @ a) (y @ a)
+      in
+      let g : F -> G =
+        \x. !a. \z. (x (!b. swap a b in z)) @ a
+      in
+      \x. f (g x)

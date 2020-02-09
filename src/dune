@@ -1,0 +1,13 @@
+(menhir
+ (modules parser)
+ (flags --table)
+)
+
+(executable
+ (name main)
+ (public_name freshtt)
+ (modes (byte exe))
+ (libraries prelude pprint sedlex menhirLib cmdliner)
+ (preprocess
+  (pps sedlex.ppx)))
+

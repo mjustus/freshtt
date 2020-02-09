@@ -1,0 +1,4 @@
+SUCCESS
+
+G : (A : N) (X : U 0) (Y : X -> U 0) -> U 1
+  = \A X Y. [A] ((x : X) -> Y x)

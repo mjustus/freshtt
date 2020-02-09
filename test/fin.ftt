@@ -1,0 +1,10 @@
+SUCCESS
+
+data Nat : U 0
+  | Z : Nat
+  | S : (_ : Nat) -> Nat
+;
+
+data Fin : (_ : Nat) -> U 0
+  | FZ : (n : Nat) -> Fin (S n)
+  | FS : (n : Nat) -> (_ : Fin n) -> Fin (S n)

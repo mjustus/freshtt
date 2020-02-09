@@ -1,0 +1,4 @@
+FAILURE UNBOUND_TCN
+
+data D : U 1
+| C : (_ : (_ : (_ : D) -> U 0) -> U 0) -> D

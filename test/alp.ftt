@@ -1,0 +1,4 @@
+SUCCESS
+
+_ : (A : N) (X : U 0) -> X -> [A] X
+   = \_ _ x. !a. x

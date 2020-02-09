@@ -1,0 +1,8 @@
+SUCCESS
+
+T : U 1
+  = U 0
+;
+
+apply : (T -> T) -> T -> T
+  = \f x. f x

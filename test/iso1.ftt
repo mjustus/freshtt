@@ -1,0 +1,17 @@
+SUCCESS
+
+F : (A : N) (X : U 0) (Y : X -> U 0) -> U 1
+  = \A X Y. (x : [A]X) -> [a : A] -> Y (x @ a)
+;
+G : (A : N) (X : U 0) (Y : X -> U 0) -> U 1
+  = \A X Y. [A] ((x : X) -> Y x)
+;
+
+f : (A : N) (X : U 0) (Y : X -> U 0) -> F A X Y -> G A X Y
+  = \_ _ _. \x. !a. \z. (x (!b. swap a b in z)) @ a
+;
+g : (A : N) (X : U 0) (Y : X -> U 0) -> G A X Y -> F A X Y
+  = \_ _ _. \x. \y. !a. (x @ a) (y @ a)
+;
+id : (A : N) (X : U 0) (Y : X -> U 0) -> G A X Y -> G A X Y
+  = \A X Y x. f A X Y (g A X Y x)
